@@ -1,0 +1,903 @@
+openapi: 3.0.3
+
+info:
+  title: conduit
+  description: Backend API for Conduit Interface
+  version: '@project.version@'
+
+paths:
+  /v1/users:
+    post:
+      description: Register a new user
+      operationId: register A
+      tags:
+        - user
+      responses:
+        200:
+          $ref: '#/components/responses/UserResponse'
+        403:
+          $ref: '#/components/responses/BadRequest'
+        400:
+          $ref: '#/components/responses/Error'
+        404:
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+
+  /v1/users/login:
+    post:
+      operationId: authenticateUser
+      summary: Authenticate the user.
+      tags:
+        - user
+      requestBody:
+        description: User authentication information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/AuthenticationRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/UserResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/Error'
+        404:
+          $ref: '#/components/responses/Error'
+
+  /v1/user:
+    get:
+      operationId: getCurrentUser
+      description: Get current user information
+      tags:
+        - user
+      security:
+        - bearerAuth : []
+      responses:
+        200:
+          $ref: '#/components/responses/UserResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+    put:
+      operationId: updateCurrentUser
+      description: Update current user.
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      requestBody:
+        $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/UserResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+  /v1/profiles/{username}:
+    get:
+      operationId: getProfileByUsername
+      description: Get profile by a user name
+      tags:
+        - profile
+      parameters:
+        - in: path
+          name: username
+          description: username of the profile.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/ProfileResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+  /v1/profiles/{username}/follow:
+    post:
+      operationId: followAUserProfile
+      description: Follow a user profile by username.
+      tags:
+        - profile
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: username
+          description: User name of the profile to follow
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/ProfileResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+    delete:
+      operationId: unfollowAUser
+      description: Unfollow a user profile by username.
+      tags:
+        - profile
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: username
+          description: User name of the profile to unfollow
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/ProfileResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+  /v1/articles:
+    get:
+      operationId: getMostRecentArticles
+      description: Get most recent articles.
+      tags:
+        - article
+      parameters:
+        - in: query
+          name: tag
+          description: Tag name to filter the results
+          schema:
+            type: string
+        - in: query
+          name: author
+          description: The author of the articles
+          schema:
+            type: string
+        - in: query
+          name: favorited
+          description: Article is favortied by user.
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Limit number of articles
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          name: offset
+          description: Offset/skip number of articles.
+          schema:
+            type: integer
+            format: int32
+      responses:
+          200:
+            $ref: '#/components/responses/ArticlesResponse'
+          400:
+            $ref: '#/components/responses/BadRequest'
+          403:
+            $ref: '#/components/responses/ErrorResponse'
+          404:
+            $ref: '#/components/responses/Error'
+
+    post:
+      operationId: createSingleArticle
+      description: Create a article by user.
+      tags:
+        - article
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: New article.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateArticleRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/ArticleResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+  /v1/articles/feed:
+    get:
+      description: Get feed of articles for current user.
+      operationId: getArticlesFeed
+      tags:
+        - article
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: limit
+          description: Limit number of articles
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          name: offset
+          description: Offset/skip number of articles.
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          $ref: '#/components/responses/ArticlesResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+  /v1/articles/slug:
+    get:
+      description: Get single article.
+      operationId: getSingleArticleBySlug
+      tags:
+        - article
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          description: article slug
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/ArticleResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+    put:
+      description: Update current article by slug.
+      operationId: updateArticleBySlug
+      tags:
+        - article
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: slug
+          required: true
+          in: path
+          description: slug of the article
+          schema:
+            type: string
+      requestBody:
+        required: true
+        description: Update article
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArticleRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/ArticleResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+    delete:
+      description: Delete an article.
+      operationId: deleteArticleBySlug
+      tags:
+        - article
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: slug
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/Success'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+  /v1/articles/{slug}/comments:
+    post:
+      description: Add comments to an article.
+      operationId: addCommentToArticle
+      tags:
+        - comment
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: request body for adding a comment.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommentRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/CommentResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+    get:
+      description: Get comments from an article.
+      operationId: getCommentsFromAnArticle
+      tags:
+        - comment
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/CommentsResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+  /v1/articles/{slug}/comments/{id}:
+    delete:
+      description: delete comment of an article
+      operationId: deleteCommentById
+      tags:
+        - comment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          $ref: '#/components/responses/Success'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+  /v1/articles/{slug}/favorite:
+    post:
+      description: Favorite an article
+      operationId: favoriteArticle
+      security:
+        - bearerAuth: []
+      tags:
+        - article
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/ArticleResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+    delete:
+      description: unfavorite an article
+      operationId: unfavoriteArticle
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - article
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/ArticleResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+  /v1/tags:
+    get:
+      description: get a list of tags
+      operationId: getTags
+      tags:
+        - tag
+      responses:
+        200:
+          $ref: '#/components/responses/TagsResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/ErrorResponse'
+        403:
+          $ref: '#/components/responses/ErrorResponse'
+        404:
+          $ref: '#/components/responses/Error'
+
+tags:
+  - name: user
+    description: Everything about users.
+  - name: profile
+    description: User profile information.
+  - name: article
+    description: Everything related to articles.
+  - name: comment
+    description: Operation related to comments.
+  - name: tag
+    description: Operation related to tags.
+
+
+components:
+  responses:
+    UserResponse:
+      description: User information
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserResponse'
+    ProfileResponse:
+      description: Profile of a user.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProfileResponse'
+    ArticlesResponse:
+      description: A list of articles.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArticlesResponse'
+    ArticleResponse:
+      description: Single article.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArticleResponse'
+    CommentResponse:
+      description: A single comment.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommentResponse'
+    CommentsResponse:
+      description: multiple comments response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommentsResponse'
+    TagsResponse:
+      description: a list of tags.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TagsResponse'
+
+    Success:
+      description: Success message.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Success'
+    Error:
+      description: An error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request has not been processed, request contained bad or unexpected parameter
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    UserResponse:
+      description: User authentication info.
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+    User:
+      description: User authentication info.
+      type: object
+      properties:
+        email:
+          type: string
+        token:
+          type: string
+        username:
+          type: string
+        bio:
+          type: string
+        image:
+          type: string
+    AuthenticationRequest:
+      description: Authentication request body.
+      type: object
+      required:
+        - user
+      properties:
+        user:
+          $ref: '#/components/schemas/AuthenticationRequestDetails'
+    AuthenticationRequestDetails:
+      description: Authentication request details
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    RegistrationRequest:
+      description: Request body for user registration.
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/RegistrationRequestDetails'
+    RegistrationRequestDetails:
+      description: Request body for user registration.
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    UpdateUserRequest:
+      description: Request body to update a user.
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UpdateUserRequestDetails'
+    UpdateUserRequestDetails:
+      description: Request body to update a user.
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+        image:
+          type: string
+        bio:
+          type: string
+    ProfileResponse:
+      description: Profile of user.
+      type: object
+      properties:
+        profile:
+          $ref: '#/components/schemas/Profile'
+    Profile:
+      description: Profile of user.
+      type: object
+      properties:
+        username:
+          type: string
+        bio:
+          type: string
+        image:
+          type: string
+        following:
+          type: boolean
+    ArticlesResponse:
+      description: A list of articles.
+      type: object
+      properties:
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+        articlesCount:
+          type: integer
+          format: int32
+    ArticleResponse:
+      description: response for article.
+      type: object
+      properties:
+        article:
+          $ref: '#/components/schemas/Article'
+    Article:
+      description: An article.
+      type: object
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        body:
+          type: string
+        tagList:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        favorited:
+          type: boolean
+        favoritesCount:
+          type: integer
+        author:
+          $ref: '#/components/schemas/Author'
+    Author:
+      description: An author.
+      type: object
+      properties:
+        username:
+          type: string
+        bio:
+          type: string
+        image:
+          type: string
+        following:
+          type: boolean
+    CreateArticleRequest:
+      description: Request body to create a new article.
+      type: object
+      properties:
+        article:
+          $ref: '#/components/schemas/CreateArticleRequestDetails'
+    CreateArticleRequestDetails:
+      description: Request body to create a new article.
+      type: object
+      required:
+        - title
+        - description
+        - body
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        body:
+          type: string
+        tagList:
+          type: array
+          items:
+            type: string
+    UpdateArticleRequest:
+      type: object
+      description: Request body of updating an article.
+      properties:
+        article:
+          $ref: '#/components/schemas/UpdateArticleRequestDetails'
+    UpdateArticleRequestDetails:
+      type: object
+      description: Request body of updating an article.
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        body:
+          type: string
+    CreateCommentRequest:
+      type: object
+      description: Request body of a comment
+      properties:
+        comment:
+          $ref: '#/components/schemas/CreateCommentRequestDetails'
+    CreateCommentRequestDetails:
+      type: object
+      description: request details for creating a comment.
+      required:
+        - body
+      properties:
+        body:
+          type: string
+    CommentResponse:
+      type: object
+      description: A comment response.
+      properties:
+        comment:
+          $ref: '#/components/schemas/Comment'
+    Comment:
+      type: object
+      description: details of a comment object.
+      properties:
+        id:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        body:
+          type: string
+        author:
+          $ref: '#/components/schemas/Author'
+    CommentsResponse:
+      description: response of a list of comments
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+    TagsResponse:
+      description: a list ot tags
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+
+    Success:
+      description: Success message.
+      type: object
+      properties:
+        message:
+          type: string
+    Error:
+      description: An error.
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+    ErrorResponse:
+      type: object
+      description: Response container for the error scenario
+      required:
+        - transactionId
+        - error
+      properties:
+        transactionId:
+          type: string
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+    ErrorDetail:
+      type: object
+      description: Details for the error scenario
+      required:
+        - code
+        - reason
+        - message
+        - messageId
+      properties:
+        code:
+          type: number
+          description: HTTP status code for the error scenario
+        reason:
+          $ref: '#/components/schemas/ErrorReason'
+        messages:
+          type: array
+          description: Description of the error scenario
+          items:
+            type: string
+        messageId:
+          $ref: '#/components/schemas/ErrorMessageIdentifier'
+    ErrorReason:
+      type: string
+      description: The generalized reason for the specific error scenarios
+      enum: [ API_BAD_PARAM, API_UNAUTHORISED, API_NOT_FOUND, API_SERVICE_NOT_AVAILABLE, API_ERROR, API_THROTTLED ]
+    ErrorMessageIdentifier:
+      type: string
+      description: Error message identifier for specific error scenarios
+      enum: [ API_ING_MSGEID_00001, API_ING_MSGEID_00002,
+              API_ING_MSGEID_00003, API_ING_MSGEID_00004,
+              API_ING_MSGEID_00005, API_ING_MSGEID_00006,
+              API_ING_MSGEID_00007, API_ING_MSGEID_00008 ]
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
