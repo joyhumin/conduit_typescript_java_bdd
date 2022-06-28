@@ -33,6 +33,16 @@
           </additionalClasspathElements>
           <testClassesDirectory>${project.build.testOutputDirectory}</testClassesDirectory>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>
+                integration-test
+              </goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -80,6 +90,8 @@
         </configuration>
       </plugin>
     </plugins>
+    <!-- there is a resources configuration in the example project-->
+    <!-- https://github.com/VectorLimited/lambda-webapp-seed   -->
   </build>
 
   <dependencyManagement>
@@ -169,6 +181,34 @@
       <artifactId>selenium-java</artifactId>
       <version>${selenium.version}</version>
     </dependency>
+    <!-- selenium browser driver dependency-->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-remote-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-chrome-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-firefox-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-safari-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <!-- web driver management-->
+    <dependency>
+      <groupId>io.github.bonigarcia</groupId>
+      <artifactId>webdrivermanager</artifactId>
+      <version>5.0.3</version>
+    </dependency>
+
     <!-- shiver me libraries for test-->
     <dependency>
       <groupId>com.github.shiver-me-timbers</groupId>

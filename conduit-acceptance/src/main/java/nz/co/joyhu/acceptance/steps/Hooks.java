@@ -27,12 +27,13 @@ public class Hooks {
 
     @Before
     public void setup(){
+//        execute before every scenarios
         log.info("Scenario Start.");
-
     }
 
     @After
     public void tearDown(Scenario scenario){
+//        execute after every scenario, regardless whether the scenario finished successfully.
         log.info("Scenario End.");
         if (scenario.isFailed()) {
             holders.forEach(holder -> log.error(holder.toString()));

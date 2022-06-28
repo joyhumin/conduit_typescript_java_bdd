@@ -1,5 +1,10 @@
 package nz.co.joyhu.acceptance.steps;
 
+/**
+ * Holder is used in steps to hold data across different step definitions
+ *
+ */
+
 public class GenericHolder<T> {
 
     private T value;
