@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>conduit-frontend</artifactId>
+
+  <parent>
+    <artifactId>conduit</artifactId>
+    <groupId>nz.co.joyhu</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+    <properties>
+        <node.version>v16.14.2</node.version>
+        <npm.version>8.5.0</npm.version>
+        <maven.test.skip>false</maven.test.skip>
+    </properties>
+
+  <build>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-clean-plugin</artifactId>
+              <version>3.2.0</version>
+              <configuration>
+                <!--Delete following two folders at clean goal-->
+                  <filesets>
+                      <fileset>
+                          <directory>build</directory>
+                          <includes>
+                              <include>**</include>
+                          </includes>
+                          <followSymlinks>false</followSymlinks>
+                      </fileset>
+                      <fileset>
+                          <directory>coverage</directory>
+                          <includes>
+                              <include>**</include>
+                          </includes>
+                          <followSymlinks>false</followSymlinks>
+                      </fileset>
+                  </filesets>
+              </configuration>
+          </plugin>
+<!--          <plugin>-->
+<!--              <groupId>org.apache.maven.plugins</groupId>-->
+<!--              <artifactId>maven-antrun-plugin</artifactId>-->
+<!--              <version>3.0.0</version>-->
+<!--              <executions>-->
+<!--                  <execution>-->
+<!--                      <id>generate-env</id>-->
+<!--                      <phase>process-resources</phase>-->
+<!--                      <configuration>-->
+<!--                          <target>-->
+<!--                              <copy file="${project.build.directory}/env" tofile="${project.basedir}/.env" />-->
+<!--                          </target>-->
+<!--                      </configuration>-->
+<!--                      <goals>-->
+<!--                          <goal>run</goal>-->
+<!--                      </goals>-->
+<!--                  </execution>-->
+<!--              </executions>-->
+<!--          </plugin>-->
+          <plugin>
+              <!-- Install Node, run Yarn, and then build the view layer with Webpack. -->
+              <groupId>com.github.eirslett</groupId>
+              <artifactId>frontend-maven-plugin</artifactId>
+              <version>1.12.0</version>
+              <configuration>
+                  <skip>false</skip>
+              </configuration>
+              <executions>
+                  <execution>
+                      <id>install node and yarn</id> <!-- frontend-maven-plugin:1.12.0:install-node-and-npm (install
+                      node and yarn). Id shows in the parenthesis-->
+                      <goals>
+                          <goal>install-node-and-npm</goal>
+                      </goals>
+                      <configuration>
+                          <nodeVersion>${node.version}</nodeVersion>
+                          <npmVersion>${npm.version}</npmVersion>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>npm-install</id>
+                      <goals>
+                          <goal>npm</goal>
+                      </goals>
+                  </execution>
+                  <execution>
+                      <id>lint</id>
+                      <phase>test-compile</phase> <!-- run this goal in the test-compile phase -->
+                      <goals>
+                          <goal>npm</goal>
+                      </goals>
+                      <configuration>
+                          <arguments>run lint</arguments>
+                          <skip>${maven.test.skip}</skip>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>npm-tests</id>
+                      <phase>test</phase>
+                      <goals>
+                          <goal>npm</goal>
+                      </goals>
+                      <configuration>
+                          <environmentVariables>
+                              <CI>true</CI>
+                          </environmentVariables>
+                          <arguments>test</arguments>
+                          <skip>${maven.test.skip}</skip>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>npm-build</id>
+                      <phase>prepare-package</phase>
+                      <goals>
+                          <goal>npm</goal>
+                      </goals>
+                      <configuration>
+                          <arguments>run build</arguments>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-assembly-plugin</artifactId>
+              <version>3.3.0</version>
+              <executions>
+                  <execution>
+                      <id>zip-assembly</id>
+                      <phase>package</phase>
+                      <goals>
+                          <goal>single</goal>
+                      </goals>
+                      <configuration>
+                          <descriptors>
+                              <descriptor>assembly/zip.xml</descriptor>
+                          </descriptors>
+                          <attach>false</attach>
+                          <appendAssemblyId>false</appendAssemblyId>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
+      </plugins>
+    <sourceDirectory>${project.basedir}/src</sourceDirectory>
+  </build>
+
+</project>

@@ -1,0 +1,6 @@
+import { useQuery, UseQueryResult } from "react-query";
+import { retrieve{{pascalCase name}} } from "../services";
+import { {{pascalCase name}}State } from "../types";
+
+export const use{{pascalCase name}} = (content: string): UseQueryResult<{{pascalCase name}}State, Error> =>
+  useQuery([ "{{lowerCase name}}", content ], () => retrieve{{pascalCase name}}(content), { retry: false });

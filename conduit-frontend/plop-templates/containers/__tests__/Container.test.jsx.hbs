@@ -1,0 +1,40 @@
+import React from "react";
+import { create } from "react-test-renderer";
+import { use{{pascalCase name}} } from "../../../hooks";
+import { {{pascalCase name}}Container } from "../{{pascalCase name}}Container";
+import { {{pascalCase name}} } from "../{{pascalCase name}}";
+
+jest.mock("../../../hooks");
+jest.mock("../{{pascalCase name}}", () => mockAllReactComponents(jest.requireActual("../{{pascalCase name}}")));
+
+describe("{{pascalCase name}}Container", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Can retrieve {{pascalCase name}} content", () => {
+    const example = chance.string();
+
+    // Given
+    use{{pascalCase name}}.mockReturnValueOnce({ data: { example } });
+
+    // When
+    const actual = create(<{{pascalCase name}}Container />).root.findByType({{pascalCase name}});
+
+    // Then
+    expect(use{{pascalCase name}}).toBeCalledWith("{{pascalCase name}}");
+    expect(actual.props.content).toBe(example);
+  });
+
+  test("Can not retrieve {{pascalCase name}} content", () => {
+    // Given
+    use{{pascalCase name}}.mockReturnValueOnce({ });
+
+    // When
+    const actual = create(<{{pascalCase name}}Container />).root.findByType({{pascalCase name}});
+
+    // Then
+    expect(use{{pascalCase name}}).toBeCalledWith("{{pascalCase name}}");
+    expect(actual.props.content).toBe("");
+  });
+});

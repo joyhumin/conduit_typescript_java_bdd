@@ -1,0 +1,48 @@
+import fetchMock from "fetch-mock";
+import { retrieve{{pascalCase name}} } from "../{{pascalCase name}}Service";
+
+describe("{{pascalCase name}}Service", () => {
+  afterEach(() => {
+    fetchMock.restore();
+  });
+
+  test("Can retrieve {{pascalCase name}} state", async () => {
+    const content = chance.string();
+    const expected = chance.object();
+
+    // Given
+    fetchMock.mock(`/assets/data/${content}.json`, JSON.stringify(expected));
+
+    // When
+    const actual = await retrieve{{pascalCase name}}(content);
+
+    // Then
+    expect(actual).toEqual(expected);
+  });
+
+  test("Can fail to retrieve {{pascalCase name}} state", async () => {
+    const message = chance.string();
+
+    // Given
+    fetchMock.mock("*", { status: 400, body: { error: message } });
+
+    // When
+    const actual = await catchAsyncError(() => retrieve{{pascalCase name}}(chance.string()));
+
+    // Then
+    expect(actual.message).toBe(message);
+  });
+
+  test("Can fail to fetch {{pascalCase name}} state", async () => {
+    const message = chance.string();
+
+    // Given
+    fetchMock.mock("*", { throws: new Error(message) });
+
+    // When
+    const actual = await catchAsyncError(() => retrieve{{pascalCase name}}(chance.string()));
+
+    // Then
+    expect(actual.message).toBe(message);
+  });
+});

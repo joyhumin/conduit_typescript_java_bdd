@@ -1,0 +1,8 @@
+import React from "react";
+import { {{pascalCase name}} } from "./{{pascalCase name}}";
+import { use{{pascalCase name}} } from "../../hooks";
+
+export const {{pascalCase name}}Container: React.FC = () => {
+  const { data } = use{{pascalCase name}}("{{pascalCase name}}");
+  return (<{{pascalCase name}} content={ data ? data.example : "" } />);
+};

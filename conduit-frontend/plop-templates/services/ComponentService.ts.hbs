@@ -1,0 +1,13 @@
+import { {{pascalCase name}}State } from "../types";
+
+export const retrieve{{pascalCase name}} = async (content: string): Promise<{{pascalCase name}}State> =>
+  fetch(`/assets/data/${content}.json`, {
+    headers: new Headers({ "Content-Type": "application/json; charset=utf-8" }),
+  }).then((response) => {
+    if (!response.ok) {
+      return response.json().then(({ error }) => {
+        throw new Error(error);
+      });
+    }
+    return response.json();
+  });

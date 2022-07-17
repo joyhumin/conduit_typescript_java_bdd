@@ -1,0 +1,30 @@
+import { retrieve{{pascalCase name}} } from "../../services";
+import { use{{pascalCase name}} } from "../use{{pascalCase name}}";
+import { useQuery } from "react-query";
+
+jest.mock("react-query");
+jest.mock("../../services");
+
+describe("{{pascalCase name}}Hooks", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("use {{pascalCase name}} content", () => {
+    const content = chance.string();
+    const expected = chance.object();
+
+    // Given
+    useQuery.mockImplementationOnce((_, fn) => fn());
+    retrieve{{pascalCase name}}.mockReturnValueOnce(expected);
+
+    // When
+    const actual = use{{pascalCase name}}(content);
+
+    // Then
+    expect(useQuery.mock.calls[0][0]).toEqual([ "{{lowerCase name}}", content ]);
+    expect(useQuery.mock.calls[0][2]).toEqual({ retry: false });
+    expect(retrieve{{pascalCase name}}).toBeCalledWith(content);
+    expect(actual).toBe(expected);
+  });
+});
