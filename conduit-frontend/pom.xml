@@ -8,7 +8,7 @@
   <parent>
     <artifactId>conduit</artifactId>
     <groupId>nz.co.joyhu</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
 
     <properties>
@@ -111,6 +111,16 @@
                           </environmentVariables>
                           <arguments>test</arguments>
                           <skip>${maven.test.skip}</skip>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>npm-version</id>
+                      <phase>process-resources</phase>
+                      <goals>
+                          <goal>npm</goal>
+                      </goals>
+                      <configuration>
+                          <arguments>--no-git-tag-version --allow-same-version version ${project.version}</arguments>
                       </configuration>
                   </execution>
                   <execution>
