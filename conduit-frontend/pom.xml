@@ -8,156 +8,202 @@
   <parent>
     <artifactId>conduit</artifactId>
     <groupId>nz.co.joyhu</groupId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-    <properties>
-        <node.version>v16.14.2</node.version>
-        <npm.version>8.5.0</npm.version>
-        <maven.test.skip>false</maven.test.skip>
-    </properties>
+  <properties>
+    <node.version>v16.14.2</node.version>
+    <npm.version>8.5.0</npm.version>
+    <maven.test.skip>false</maven.test.skip>
+  </properties>
 
   <build>
-      <plugins>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-clean-plugin</artifactId>
-              <version>3.2.0</version>
-              <configuration>
-                <!--Delete following two folders at clean goal-->
-                  <filesets>
-                      <fileset>
-                          <directory>build</directory>
-                          <includes>
-                              <include>**</include>
-                          </includes>
-                          <followSymlinks>false</followSymlinks>
-                      </fileset>
-                      <fileset>
-                          <directory>coverage</directory>
-                          <includes>
-                              <include>**</include>
-                          </includes>
-                          <followSymlinks>false</followSymlinks>
-                      </fileset>
-                  </filesets>
-              </configuration>
-          </plugin>
-<!--          <plugin>-->
-<!--              <groupId>org.apache.maven.plugins</groupId>-->
-<!--              <artifactId>maven-antrun-plugin</artifactId>-->
-<!--              <version>3.0.0</version>-->
-<!--              <executions>-->
-<!--                  <execution>-->
-<!--                      <id>generate-env</id>-->
-<!--                      <phase>process-resources</phase>-->
-<!--                      <configuration>-->
-<!--                          <target>-->
-<!--                              <copy file="${project.build.directory}/env" tofile="${project.basedir}/.env" />-->
-<!--                          </target>-->
-<!--                      </configuration>-->
-<!--                      <goals>-->
-<!--                          <goal>run</goal>-->
-<!--                      </goals>-->
-<!--                  </execution>-->
-<!--              </executions>-->
-<!--          </plugin>-->
-          <plugin>
-              <!-- Install Node, run Yarn, and then build the view layer with Webpack. -->
-              <groupId>com.github.eirslett</groupId>
-              <artifactId>frontend-maven-plugin</artifactId>
-              <version>1.12.0</version>
-              <configuration>
-                  <skip>false</skip>
-              </configuration>
-              <executions>
-                  <execution>
-                      <id>install node and yarn</id> <!-- frontend-maven-plugin:1.12.0:install-node-and-npm (install
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <!--Delete following two folders at clean goal-->
+          <filesets>
+            <fileset>
+              <directory>build</directory>
+              <includes>
+                <include>**</include>
+              </includes>
+              <!-- todo: is it necessary to specify false, the default value is false -->
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+            <fileset>
+              <directory>coverage</directory>
+              <includes>
+                <include>**</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!-- Install Node, run Yarn, and then build the view layer with Webpack. -->
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.12.0</version>
+        <configuration>
+          <skip>false</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>install node and yarn</id> <!-- frontend-maven-plugin:1.12.0:install-node-and-npm (install
                       node and yarn). Id shows in the parenthesis-->
-                      <goals>
-                          <goal>install-node-and-npm</goal>
-                      </goals>
-                      <configuration>
-                          <nodeVersion>${node.version}</nodeVersion>
-                          <npmVersion>${npm.version}</npmVersion>
-                      </configuration>
-                  </execution>
-                  <execution>
-                      <id>npm-install</id>
-                      <goals>
-                          <goal>npm</goal>
-                      </goals>
-                  </execution>
-                  <execution>
-                      <id>lint</id>
-                      <phase>test-compile</phase> <!-- run this goal in the test-compile phase -->
-                      <goals>
-                          <goal>npm</goal>
-                      </goals>
-                      <configuration>
-                          <arguments>run lint</arguments>
-                          <skip>${maven.test.skip}</skip>
-                      </configuration>
-                  </execution>
-                  <execution>
-                      <id>npm-tests</id>
-                      <phase>test</phase>
-                      <goals>
-                          <goal>npm</goal>
-                      </goals>
-                      <configuration>
-                          <environmentVariables>
-                              <CI>true</CI>
-                          </environmentVariables>
-                          <arguments>test</arguments>
-                          <skip>${maven.test.skip}</skip>
-                      </configuration>
-                  </execution>
-                  <execution>
-                      <id>npm-version</id>
-                      <phase>process-resources</phase>
-                      <goals>
-                          <goal>npm</goal>
-                      </goals>
-                      <configuration>
-                          <arguments>--no-git-tag-version --allow-same-version version ${project.version}</arguments>
-                      </configuration>
-                  </execution>
-                  <execution>
-                      <id>npm-build</id>
-                      <phase>prepare-package</phase>
-                      <goals>
-                          <goal>npm</goal>
-                      </goals>
-                      <configuration>
-                          <arguments>run build</arguments>
-                      </configuration>
-                  </execution>
-              </executions>
-          </plugin>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-assembly-plugin</artifactId>
-              <version>3.3.0</version>
-              <executions>
-                  <execution>
-                      <id>zip-assembly</id>
-                      <phase>package</phase>
-                      <goals>
-                          <goal>single</goal>
-                      </goals>
-                      <configuration>
-                          <descriptors>
-                              <descriptor>assembly/zip.xml</descriptor>
-                          </descriptors>
-                          <attach>false</attach>
-                          <appendAssemblyId>false</appendAssemblyId>
-                      </configuration>
-                  </execution>
-              </executions>
-          </plugin>
-      </plugins>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <configuration>
+              <nodeVersion>${node.version}</nodeVersion>
+              <npmVersion>${npm.version}</npmVersion>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm-install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>lint</id>
+            <phase>test-compile</phase> <!-- run this goal in the test-compile phase -->
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run lint</arguments>
+              <skip>${maven.test.skip}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm-tests</id>
+            <phase>test</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <environmentVariables>
+                <CI>true</CI>
+              </environmentVariables>
+              <arguments>test</arguments>
+              <skip>${maven.test.skip}</skip>
+            </configuration>
+          </execution>
+<!--          cannot run the following command directly, as our maven version doesn't follow semantic version -->
+<!--          <execution>-->
+<!--            <id>npm-version</id>-->
+<!--            <phase>process-resources</phase>-->
+<!--            <goals>-->
+<!--              <goal>npm</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <arguments>&#45;&#45;no-git-tag-version &#45;&#45;allow-same-version version ${project.version}</arguments>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+          <execution>
+            <id>npm-build</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run build</arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>zip-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>assembly/zip.xml</descriptor>
+              </descriptors>
+              <attach>false</attach>
+              <appendAssemblyId>false</appendAssemblyId>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
     <sourceDirectory>${project.basedir}/src</sourceDirectory>
   </build>
+  <!-- profiles override the default settins in a pom, element is usally listed as the last element -->
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>parse-version</id>
+                <goals>
+                  <goal>parse-version</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <version>1.12.0</version>
+            <executions>
+              <execution>
+                <id>npm-version</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>npm</goal>
+                </goals>
+                <configuration>
+                  <!--suppress MavenModelInspection -->
+                  <arguments>
+                    --no-git-tag-version --allow-same-version version
+                    ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.0
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-scm-plugin</artifactId>
+            <version>1.12.0</version>
+            <executions>
+              <execution>
+                <id>commit-package-version</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>checkin</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <pushChanges>false</pushChanges>
+              <message>[maven-scm-plugin] set package.json version to ${project.version}</message>
+              <includes>package.json,package-lock.json</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
 
 </project>
