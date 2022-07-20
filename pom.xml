@@ -166,10 +166,20 @@
       </plugin>
 
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.3.0</version>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.3</version>
         <configuration>
+          <!-- every module gets the same version as the parent POM. In CLI, it's '-B' option-->
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <pushChanges>true</pushChanges>
+          <tagNameFormat>@{project.version}</tagNameFormat>
           <preparationGoals>clean package -Prelease -DskipTests</preparationGoals>
           <!-- Update the frontends version to the current SNAPSHOT version. -->
           <completionGoals>process-resources -am -pl ${frontend.module} -Prelease</completionGoals>
