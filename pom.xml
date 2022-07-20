@@ -221,7 +221,8 @@
 
   <!-- scm section is required by maven release plugin -->
   <scm>
-    <developerConnection>scm:git:https://github.com/joyhumin/conduit_typescript_java_bdd.git</developerConnection>
-    <connection>scm:git:https://github.com/joyhumin/conduit_typescript_java_bdd.git</connection>
+    <developerConnection>scm:git:git@me.github.com:joyhumin/conduit_typescript_java_bdd.git</developerConnection>
+    <connection>scm:git:git@me.github.com:joyhumin/conduit_typescript_java_bdd.git</connection>
+    <url>https://github.com/joyhumin/conduit_typescript_java_bdd.git</url>
   </scm>
 </project>
