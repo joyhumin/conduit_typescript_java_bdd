@@ -4,7 +4,7 @@
   <!--  information about this project-->
   <groupId>nz.co.joyhu</groupId>
   <artifactId>conduit</artifactId>
-  <version>0.2.0</version>
+  <version>0.1-SNAPSHOT</version>
 
   <name>${project.artifactId}</name>
 
@@ -184,6 +184,21 @@
           <!-- Update the frontends version to the current SNAPSHOT version. -->
           <completionGoals>process-resources -am -pl ${frontend.module} -Prelease</completionGoals>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>show-profiles</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>active-profiles</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

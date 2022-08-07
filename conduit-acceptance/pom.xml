@@ -5,7 +5,7 @@
   <parent>
     <artifactId>conduit</artifactId>
     <groupId>nz.co.joyhu</groupId>
-    <version>0.2.0</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>conduit-acceptance</artifactId>
