@@ -4,7 +4,7 @@
   <!--  information about this project-->
   <groupId>nz.co.joyhu</groupId>
   <artifactId>conduit</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
 
   <name>${project.artifactId}</name>
 
@@ -248,6 +248,6 @@
     <developerConnection>scm:git:git@me.github.com:joyhumin/conduit_typescript_java_bdd.git</developerConnection>
     <connection>scm:git:git@me.github.com:joyhumin/conduit_typescript_java_bdd.git</connection>
     <url>https://github.com/joyhumin/conduit_typescript_java_bdd.git</url>
-    <tag>0.2.0</tag>
+    <tag>0.1</tag>
   </scm>
 </project>
