@@ -6,7 +6,7 @@
   <parent>
     <artifactId>conduit</artifactId>
     <groupId>nz.co.joyhu</groupId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
   </parent>
 
   <properties>
