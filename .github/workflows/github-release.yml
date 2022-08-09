@@ -1,0 +1,13 @@
+name: create-release
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+      - name: Create Release
+        uses: softprops/action-gh-release@v1

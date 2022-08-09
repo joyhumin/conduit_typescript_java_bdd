@@ -4,7 +4,7 @@
   <!--  information about this project-->
   <groupId>nz.co.joyhu</groupId>
   <artifactId>conduit</artifactId>
-  <version>0.1.2-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
 
   <name>${project.artifactId}</name>
 
@@ -166,6 +166,12 @@
       </plugin>
 
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.3.0</version>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.3</version>
@@ -178,6 +184,21 @@
           <!-- Update the frontends version to the current SNAPSHOT version. -->
           <completionGoals>process-resources -am -pl ${frontend.module} -Prelease</completionGoals>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>show-profiles</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>active-profiles</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -227,6 +248,6 @@
     <developerConnection>scm:git:git@me.github.com:joyhumin/conduit_typescript_java_bdd.git</developerConnection>
     <connection>scm:git:git@me.github.com:joyhumin/conduit_typescript_java_bdd.git</connection>
     <url>https://github.com/joyhumin/conduit_typescript_java_bdd.git</url>
-    <tag>HEAD</tag>
+    <tag>0.2.0</tag>
   </scm>
 </project>

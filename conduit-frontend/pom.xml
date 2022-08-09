@@ -6,7 +6,7 @@
   <parent>
     <artifactId>conduit</artifactId>
     <groupId>nz.co.joyhu</groupId>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -93,17 +93,6 @@
               <skip>${maven.test.skip}</skip>
             </configuration>
           </execution>
-<!--          cannot run the following command directly, as our maven version doesn't follow semantic version -->
-<!--          <execution>-->
-<!--            <id>npm-version</id>-->
-<!--            <phase>process-resources</phase>-->
-<!--            <goals>-->
-<!--              <goal>npm</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <arguments>&#45;&#45;no-git-tag-version &#45;&#45;allow-same-version version ${project.version}</arguments>-->
-<!--            </configuration>-->
-<!--          </execution>-->
           <execution>
             <id>npm-build</id>
             <phase>prepare-package</phase>
@@ -140,12 +129,13 @@
     </plugins>
     <sourceDirectory>${project.basedir}/src</sourceDirectory>
   </build>
-  <!-- profiles override the default settins in a pom, element is usally listed as the last element -->
+  <!-- profiles override the default settings in a pom, element is usually listed as the last element -->
   <profiles>
     <profile>
       <id>release</id>
       <build>
         <plugins>
+          <!-- parse version of the project-->
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
@@ -158,6 +148,7 @@
               </execution>
             </executions>
           </plugin>
+          <!-- run npm version CLI to update package & package lock file -->
           <plugin>
             <groupId>com.github.eirslett</groupId>
             <artifactId>frontend-maven-plugin</artifactId>
@@ -179,6 +170,7 @@
               </execution>
             </executions>
           </plugin>
+          <!-- use SCM plugin to commit the changes -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-scm-plugin</artifactId>

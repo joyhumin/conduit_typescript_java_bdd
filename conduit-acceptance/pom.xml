@@ -5,7 +5,7 @@
   <parent>
     <artifactId>conduit</artifactId>
     <groupId>nz.co.joyhu</groupId>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>conduit-acceptance</artifactId>
@@ -185,12 +185,19 @@
       <artifactId>selenium-java</artifactId>
       <version>${selenium.version}</version>
     </dependency>
+    <!-- selenium api dependency is needed otherwise, it will throw hasAuthentication not found error  -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-api</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
     <!-- selenium browser driver dependency-->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-remote-driver</artifactId>
       <version>${selenium.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-chrome-driver</artifactId>

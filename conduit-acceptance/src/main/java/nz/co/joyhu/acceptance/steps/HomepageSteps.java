@@ -56,15 +56,15 @@ public class HomepageSteps {
     }
 
     // todo: following two steps need to move out from homepage feature file
-    @Then("I can see global feed of articles")
-    public void iCanSeeGlobalFeedOfArticles() {
-        assertGlobalFeed(homePage.getGlobalFeedArticlePreviews(), articleHolder.get());
-    }
-
-    @And("I can see a list of popular tags")
-    public void iCanSeeAListOfPopularTags() {
-        assertThat(homePage.getPopularTags(), equalTo(tagHolder.get()));
-    }
+//    @Then("I can see global feed of articles")
+//    public void iCanSeeGlobalFeedOfArticles() {
+//        assertGlobalFeed(homePage.getGlobalFeedArticlePreviews(), articleHolder.get());
+//    }
+//
+//    @And("I can see a list of popular tags")
+//    public void iCanSeeAListOfPopularTags() {
+//        assertThat(homePage.getPopularTags(), equalTo(tagHolder.get()));
+//    }
 
     private void assertGlobalFeed( List<ArticlePreview> actual, List<Article> expected) {
         assertThat(expected.size(), equalTo(actual.size()));
