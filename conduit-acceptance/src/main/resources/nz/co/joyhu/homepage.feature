@@ -6,5 +6,3 @@ Feature: Can view the details of a homepage
     And I want to visit conduit homepage
     When I access the homepage
     Then I can see the banner
-    Then I can see global feed of articles
-    And I can see a list of popular tags
