@@ -1,6 +1,6 @@
 import React from "react";
 import { create } from "react-test-renderer";
-import { HomePage } from "../HomePage";
+import { PublicHomePage } from "../PublicHomePage";
 import { Banner } from "../../../components/Banner";
 
 jest.mock("@mui/material", () => mockAllReactComponents(jest.requireActual("@mui/material")));
@@ -16,7 +16,7 @@ describe("HomePage", () => {
     // Given
 
     // When
-    const actual = create(<HomePage />).root;
+    const actual = create(<PublicHomePage />).root;
 
     // Then
     expect(actual.findByType(Banner)).toBeDefined();

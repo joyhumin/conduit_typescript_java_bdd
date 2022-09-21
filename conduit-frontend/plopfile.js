@@ -56,6 +56,12 @@ module.exports = plop  => {
           template: `${_export}\n$1`,
         };
       };
+      // Action types:
+      // State => create data type
+      // Component => functional component, index & test without state
+      // Service => static json data, service & test file with state;
+      // Hook => hook & hook test, + whatever state + whatever service create
+      // Container => component + hook
       const stateActions = [
         {
           // Add a new file
