@@ -2,7 +2,7 @@ import React from 'react';
 import App from './App';
 import { create } from "react-test-renderer";
 import { Route, Routes } from "react-router-dom";
-import { PublicHomePage } from "./pages/HomePage";
+import { HomePage } from "./pages/HomePage";
 
 jest.mock("react-router-dom", () => ({
   Routes: mockReactComponent(),
@@ -27,7 +27,7 @@ describe("App", () => {
     expect(actual.findByType(Routes)).toBeDefined();
     const routes = actual.findAllByType(Route);
     expect(routes[0].props.path).toEqual("/"); // only check value, not object reference
-    expect(routes[0].props.element.type).toEqual(PublicHomePage);
+    expect(routes[0].props.element.type).toEqual(HomePage);
 
   });
 });

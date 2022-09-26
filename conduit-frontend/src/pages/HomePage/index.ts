@@ -1,1 +1,1 @@
-export * from "./PublicHomePage";
+export * from "./HomePage";

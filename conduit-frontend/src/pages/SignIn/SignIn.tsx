@@ -29,7 +29,8 @@ export const SignIn: React.FC<Props> = ({ content }) => {
 
   useEffect(() => {
     if (currentUser) {
-      navigate(`/profile/${currentUser.username}`);
+      // navigate(`/profile/${currentUser.username}`);
+      navigate(`/`);
     }
   }, [currentUser]);
 

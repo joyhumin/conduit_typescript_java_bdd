@@ -5,12 +5,11 @@ import { useAuth, UserRegistration } from "../../hooks";
 import { useNavigate } from "react-router";
 
 
-export const JWT_TOKEN = "jwt_token";
 
 export const Registration: React.FC = () => {
   console.log(`*********Registration rendered*********`);
 
-  const [{ currentUser }, registrationHandler] = useAuth();
+  const [{ currentUser }, , registrationHandler] = useAuth();
   const navigate = useNavigate();
   // use formRef instead of setting each state to prevent unnecessary re-rendering for each keypress from user
   const formRef = useRef<HTMLFormElement>(null); // save any instance, useRef always create singleton object, always
@@ -34,10 +33,9 @@ export const Registration: React.FC = () => {
   }
 
   useEffect(() => {
-    console.log("useEffect called", currentUser);
     if (currentUser) {
       console.log("called navigation");
-      navigate(`/profile/${currentUser.username}`);
+      navigate(`/`);
     }
   }, [currentUser]);
 

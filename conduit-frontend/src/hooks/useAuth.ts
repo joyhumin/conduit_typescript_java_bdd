@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { loginRequest, sendNewUserRequest } from "../services";
-import { JWT_TOKEN } from "../pages/Registration";
 import { User } from "../types";
+import { useUserContext } from "../contexts";
 
 // export const useAuth = (content: string): UseQueryResult<AuthState, Error> =>
 //   useQuery([ "auth", content ], () => retrieveAuth(content), { retry: false });
+
+export const JWT_TOKEN = "jwt_token";
+export const USERNAME = "logged_in_username";
 
 export interface UserSignIn {
   email: string;
@@ -18,19 +21,25 @@ export interface UserRegistration extends UserSignIn {
 type SignHandler = (user: UserSignIn) => void
 type RegistrationHandler = (user: UserRegistration) => void
 
-type UseAuthResult = [{ currentUser?: User }, SignHandler, RegistrationHandler];
+type UseAuthResult = [
+  { currentUser?: User, isLoggedIn?: boolean },
+  SignHandler,
+  RegistrationHandler];
 
 export const useAuth = (): UseAuthResult => {
   const [currentUser, setCurrentUser] = useState<User>();
+  const { setUser } = useUserContext();
 
   // note: whenever the components which call `useAuth` get re-rendered,
   // useAuth will get called again, thus, the handlers will be defined again (different object references).
 
-  const signInHandler = useCallback((user: UserSignIn) => {
-    const loginReq = { user };
+  const signInHandler = useCallback((signReq: UserSignIn) => {
+    const loginReq = { user: signReq };
 
     loginRequest(loginReq).then(
-      data => setCurrentUser(data.user)
+      data => {
+        setCurrentUser(data.user);
+      }
     );
   }, [loginRequest]);
 
@@ -47,10 +56,13 @@ export const useAuth = (): UseAuthResult => {
 
 // todo: refactor same code as in registration
   useEffect(() => {
-    if (currentUser && currentUser.token) {
+    if (currentUser) {
       window.sessionStorage.setItem(JWT_TOKEN, currentUser.token);
+      window.sessionStorage.setItem(USERNAME, currentUser.username);
+      console.log("useEffect in useAuth called, and set context user to ", currentUser);
+      setUser(currentUser);
     }
-  }, [currentUser]);
+  }, [currentUser, setUser]);
 
   return [{ currentUser }, signInHandler, registrationHandler];
   // note: usually put handlers in the array,

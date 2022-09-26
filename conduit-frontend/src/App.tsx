@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import { SignIn } from "./pages/SignIn";
 import { Layout } from "./pages/Layout";
-import { PublicHomePage } from "./pages/HomePage";
+import { HomePage } from "./pages/HomePage";
 import { Registration } from "./pages/Registration";
 import { Profile } from "./pages/Profile";
 
@@ -11,10 +11,10 @@ function App() {
   return (
     <Routes>
       <Route path={"/"} element={<Layout />}>
-        <Route index element={<PublicHomePage />} />
+        <Route index element={<HomePage />} />
         <Route path={"login"} element={<SignIn content={"Sign in"} />} />
         <Route path={"register"} element={<Registration />} />
-        <Route path={"profile/:username"} element={<Profile/>}/>
+        <Route path={"profile/:username"} element={<Profile />} />
       </Route>
     </Routes>
   );

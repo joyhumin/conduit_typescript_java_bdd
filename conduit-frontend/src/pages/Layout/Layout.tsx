@@ -1,33 +1,35 @@
 import React from "react";
 import { Outlet } from "react-router";
-import { AppBar, Box,Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { NavMenu } from "../../components/NavMenu";
+import { UserProvider } from "../../contexts";
 
-export function Layout(){
+export function Layout() {
+  console.log("**********Layout rendered**********");
   return (
-    <>
-      <Box sx={{flexGrow: 1}}>
+    <UserProvider>
+      <Box sx={{ flexGrow: 1 }}>
         <AppBar
           elevation={0}
           position={"sticky"}
           color={"transparent"}
         >
-          <Toolbar sx={{justifyContent: "space-between"}}>
+          <Toolbar sx={{ justifyContent: "space-between" }}>
             {/*textDecorattion to remove underline of the hyperlink*/}
             <Typography
               variant={"h5"}
               component={RouterLink}
               to={"/"}
-              sx={{color: "text.secondary", textDecoration: 'none'}}>CONDUIT
+              sx={{ color: "text.secondary", textDecoration: 'none' }}>CONDUIT
             </Typography>
-            <NavMenu/>
+            <NavMenu />
           </Toolbar>
 
         </AppBar>
       </Box>
 
-      <Outlet/>
-    </>
+      <Outlet />
+    </UserProvider>
   );
 }
