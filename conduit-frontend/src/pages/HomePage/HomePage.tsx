@@ -1,14 +1,14 @@
 import React from "react";
-import { JWT_TOKEN } from "../../hooks";
 import { UserHomePage } from "../../components/UserHomePage";
 import { GuestHomePage } from "../../components/GuestHomePage";
+import { useUserContext } from "../../contexts";
 
 export const HomePage: React.FC = () => {
-  const isLoggedIn = !!window.sessionStorage.getItem(JWT_TOKEN);
+  const { user } = useUserContext();
 
   return (
     <React.Fragment>
-      {isLoggedIn ? <UserHomePage content={"user home page"} /> : <GuestHomePage />}
+      {user ? <UserHomePage content={"user home page"} /> : <GuestHomePage />}
     </React.Fragment>
   );
 };

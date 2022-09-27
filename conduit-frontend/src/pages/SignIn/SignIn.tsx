@@ -3,6 +3,7 @@ import { Box, Container, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useAuth, UserSignIn } from "../../hooks";
 import { useNavigate } from "react-router";
+import { FormLabelledInput } from "../../components/FormLabelledInput";
 
 
 interface Props {
@@ -50,15 +51,9 @@ export const SignIn: React.FC<Props> = ({ content }) => {
         </Box>
 
         <form ref={formRef} onSubmit={handleSubmit}>
-          <p>
-            <label htmlFor="email">Email: </label>
-            <input type="email" id="email" name="email" required={true} />
-          </p>
-          <p>
-            <label htmlFor="pwd">Password: </label>
-            <input type="password" id="pwd" name="password" required={true} />
-          </p>
-          <button type={"submit"}>Sign in</button>
+          <FormLabelledInput type={"email"} name={"email"} label={"E-mail"}/>
+          <FormLabelledInput type={"password"} name={"password"} label={"Password"}/>
+          <button type={"submit"} data-test={"sign-in-button"}>Sign in</button>
         </form>
       </Box>
     </Container>

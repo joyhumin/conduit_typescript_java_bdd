@@ -5,14 +5,16 @@ import { Box } from "@mui/material";
 interface Props {
   itemName: string;
   to: string;
+  ariaLabel?: string;
 }
 
-export const NavMenuItem: React.FC<Props> = ({itemName, to}) => {
+export const NavMenuItem: React.FC<Props> = ({itemName, to, ariaLabel}) => {
   return (
     <Box
       component={"li"}
       sx={{display: "inline-block"}}
       mx={1}
+      aria-label={ariaLabel}
     >
       <NavLink
         style={({isActive}) => {

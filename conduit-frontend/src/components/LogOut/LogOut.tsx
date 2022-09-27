@@ -3,7 +3,6 @@ import { Button } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { useUserContext } from "../../contexts";
-import { EMPTY_USER } from "../../types";
 
 
 export const LogOut: React.FC = () => {
@@ -11,7 +10,7 @@ export const LogOut: React.FC = () => {
   const { setUser } = useUserContext();
 
   function handleClick() {
-    setUser(EMPTY_USER);
+    setUser(undefined);
     sessionStorage.clear();
     navigate("/login");
   }

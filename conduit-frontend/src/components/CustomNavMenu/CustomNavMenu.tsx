@@ -2,17 +2,17 @@ import React from "react";
 import { ProfileNavItems } from "../ProfileNavItems";
 import { GuestNavItems } from "../GuestNavItems";
 import { useUserContext } from "../../contexts";
-import { JWT_TOKEN } from "../../hooks";
-import { EMPTY_USER } from "../../types";
 
 
 export const CustomNavMenu: React.FC = () => {
   console.log("**********CustomNavMenu rendered**********");
-  const { user } = useUserContext();
-  const isLoggedIn = !!window.sessionStorage.getItem(JWT_TOKEN);
-  const userLoggedIn = user !== EMPTY_USER && isLoggedIn;
+  // note: The updates to context values doesn't trigger re-render for
+  // all the children of the provider, rather only components that are rendered from within the Consumer,
+  const { user} = useUserContext();
+  console.log("user from context", user);
+
 
   return <React.Fragment>
-    {userLoggedIn ? <ProfileNavItems /> : <GuestNavItems />}
+    {user ? <ProfileNavItems /> : <GuestNavItems />}
   </React.Fragment>;
 };

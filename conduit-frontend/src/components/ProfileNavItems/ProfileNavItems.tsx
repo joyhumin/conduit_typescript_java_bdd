@@ -1,15 +1,15 @@
 import React from "react";
 import { NavMenuItem } from "../NavMenuItem";
-import { USERNAME } from "../../hooks";
 import { LogOut } from "../LogOut";
+import { useUserContext } from "../../contexts";
 
 
 export const ProfileNavItems: React.FC = () => {
   console.log("**********ProfileNavItems rendered**********");
-  const username = window.sessionStorage.getItem(USERNAME);
+  const { user } = useUserContext();
   return (
     <React.Fragment>
-      <NavMenuItem itemName={`${username}`} to={`/profile/${username}`} />
+      <NavMenuItem itemName={`${user?.username}`} to={`/profile/${user?.username}`} ariaLabel={"user-profile-name"} />
       <LogOut />
     </React.Fragment>
   );

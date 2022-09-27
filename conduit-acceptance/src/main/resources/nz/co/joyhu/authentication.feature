@@ -5,6 +5,7 @@ Feature: Can sign in
 
   Scenario: Can sign in
     Given I am an existing conduit user
+    And I am on login page
     When I login when valid credentials
     Then I should be taken to personalised feed page
 
@@ -16,5 +17,6 @@ Feature: Can sign in
 
   Scenario: Can register
     Given I am a unregsitered user
+    And I am on sign up page
     When I register with account information
     Then I should be taken to personalised feed page

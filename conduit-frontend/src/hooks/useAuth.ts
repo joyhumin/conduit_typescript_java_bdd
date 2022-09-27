@@ -7,7 +7,7 @@ import { useUserContext } from "../contexts";
 //   useQuery([ "auth", content ], () => retrieveAuth(content), { retry: false });
 
 export const JWT_TOKEN = "jwt_token";
-export const USERNAME = "logged_in_username";
+export const USER = "user";
 
 export interface UserSignIn {
   email: string;
@@ -57,8 +57,7 @@ export const useAuth = (): UseAuthResult => {
 // todo: refactor same code as in registration
   useEffect(() => {
     if (currentUser) {
-      window.sessionStorage.setItem(JWT_TOKEN, currentUser.token);
-      window.sessionStorage.setItem(USERNAME, currentUser.username);
+      window.sessionStorage.setItem(USER, JSON.stringify(currentUser));
       console.log("useEffect in useAuth called, and set context user to ", currentUser);
       setUser(currentUser);
     }

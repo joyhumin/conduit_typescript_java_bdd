@@ -3,7 +3,7 @@ import { Box, Container, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useAuth, UserRegistration } from "../../hooks";
 import { useNavigate } from "react-router";
-
+import { FormLabelledInput } from "../../components/FormLabelledInput";
 
 
 export const Registration: React.FC = () => {
@@ -57,35 +57,11 @@ export const Registration: React.FC = () => {
         </Box>
 
         <form ref={formRef} onSubmit={handleSubmit}>
+          <FormLabelledInput type={"text"} name={"username"} label={"Name"} placeholder={"Enter your username"} />
+          <FormLabelledInput type={"email"} name={"email"} label={"E-mail"} placeholder={"Enter your email"} />
+          <FormLabelledInput type={"password"} name={"password"} label={"Password"} placeholder={"Enter your password"} />
           <p>
-            <label htmlFor="name">Name: </label>
-            <input
-              type="text"
-              name="username"
-              id="name"
-              required={true}
-              placeholder={"Enter your username"} />
-          </p>
-          <p>
-            <label htmlFor="mail">E-mail: </label>
-            <input
-              type="email"
-              name="email"
-              id="mail"
-              required={true}
-              placeholder={"Enter your email"} />
-          </p>
-          <p>
-            <label htmlFor={"pwd"}>Password: </label>
-            <input
-              type={"password"}
-              name={"password"}
-              id={"pwd"}
-              required={true}
-              placeholder={"Enter your password"} />
-          </p>
-          <p>
-            <button type={"submit"}>Sign up</button>
+            <button type={"submit"} data-test={"sign-up-button"}>Sign up</button>
           </p>
         </form>
       </Box>

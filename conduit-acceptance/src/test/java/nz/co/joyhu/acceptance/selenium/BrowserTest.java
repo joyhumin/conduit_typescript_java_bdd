@@ -8,6 +8,10 @@ import org.mockito.ScopedMock;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.html5.LocalStorage;
+import org.openqa.selenium.html5.SessionStorage;
+import org.openqa.selenium.html5.WebStorage;
 
 import java.util.List;
 
@@ -18,6 +22,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 public class BrowserTest {
@@ -100,5 +105,75 @@ public class BrowserTest {
 
         // Then
         assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_find_element_by_name() {
+
+        final String name = someAlphaString(5);
+        final WebElement expected = mock(WebElement.class);
+        // Given
+        given(driver.findElement(By.name(name))).willReturn(expected);
+
+        // When
+        final WebElement actual = browser.findElementByName(name);
+
+        // Then
+        assertThat(actual, is(expected));
+
+    }
+
+    @Test
+    public void Can_find_element_by_tag_name() {
+
+        final String tagName = someString(5);
+        final WebElement expected = mock(WebElement.class);
+        // Given
+        given(driver.findElement(By.tagName(tagName))).willReturn(expected);
+
+        // When
+        final WebElement actual = browser.findElementByTag(tagName);
+
+        // Then
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_find_element_by_aria_label() {
+
+        final String ariaLabel = someAlphaString(5);
+        final WebElement expected = mock(WebElement.class);
+        // Given
+        given(driver.findElement(Bys.ariaLabel(ariaLabel))).willReturn(expected);
+
+        // When
+        final WebElement actual = browser.findElementByAriaLabel(ariaLabel);
+
+        // Then
+        assertThat(actual, is(expected));
+
+    }
+
+    @Test
+    public void Can_clear_browser_storage_and_cookies() {
+
+        final WebDriver.Options op = mock(WebDriver.Options.class);
+        final WebStorage storage = mock(WebStorage.class);
+        final SessionStorage sessionStorage = mock(SessionStorage.class);
+        final LocalStorage localStorage = mock(LocalStorage.class);
+        driver = mock(ChromeDriver.class);
+        // Given
+        given(driver.manage()).willReturn(op);
+//        given((WebStorage) driver).willReturn(storage);
+        given(storage.getSessionStorage()).willReturn(sessionStorage);
+        given(storage.getLocalStorage()).willReturn(localStorage);
+
+        // When
+        browser.clear();
+
+        // Then
+        then(op).should().deleteAllCookies();
+        then(sessionStorage).should().clear();
+        then(localStorage).should().clear();
     }
 }
