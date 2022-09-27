@@ -37,7 +37,7 @@ export const Registration: React.FC = () => {
       console.log("called navigation");
       navigate(`/`);
     }
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
 
   return (

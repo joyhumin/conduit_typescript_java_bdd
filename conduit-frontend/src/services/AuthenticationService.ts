@@ -1,8 +1,9 @@
 import { UserResponse } from "../types";
+import env from "../environment";
 
 // fixme: parameter type should not be any
 export const sendNewUserRequest = async (content: any): Promise<UserResponse> =>
-  fetch(`http://localhost:8090/api/v1/users`,
+  fetch(`${env.REACT_APP_API_ENDPOINT}/users`,
     {
       method: "POST",
       body: JSON.stringify(content),
@@ -18,7 +19,7 @@ export const sendNewUserRequest = async (content: any): Promise<UserResponse> =>
   });
 
 export const loginRequest = async (content: any): Promise<UserResponse> =>
-  fetch(`http://localhost:8090/api/v1/users/login`,
+  fetch(`${env.REACT_APP_API_ENDPOINT}/users/login`,
     {
       method: "POST",
       body: JSON.stringify(content),

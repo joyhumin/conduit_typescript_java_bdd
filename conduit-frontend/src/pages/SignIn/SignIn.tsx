@@ -33,7 +33,7 @@ export const SignIn: React.FC<Props> = ({ content }) => {
       // navigate(`/profile/${currentUser.username}`);
       navigate(`/`);
     }
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
   return (
     <Container maxWidth={"sm"}>
