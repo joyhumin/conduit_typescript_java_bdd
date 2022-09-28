@@ -1,6 +1,7 @@
 package nz.co.joyhu.acceptance.selenium;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.TakesScreenshot;
@@ -77,8 +78,9 @@ public class Browser {
     }
 
     public void clearStorage() {
-        final WebStorage webStorage = (WebStorage) driver;
-        webStorage.getSessionStorage().clear();
-        webStorage.getLocalStorage().clear();
+        final JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+//        final WebStorage webStorage = (WebStorage) driver; note: webStorage interface only be implemented in chromeDriver & firefox driver.
+        jsExecutor.executeScript("localStorage.clear()");
+        jsExecutor.executeScript("sessionStorage.clear()");
     }
 }

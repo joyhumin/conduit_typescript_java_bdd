@@ -95,7 +95,7 @@ public class AuthenticationStepsTest {
         steps.iShouldBeTakenToPersonalisedFeedPage();
 
         // Then
-        then(userHomePage).should().visit();
+        then(userHomePage).should().getUserName();
     }
 
     @Test

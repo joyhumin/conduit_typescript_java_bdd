@@ -9,11 +9,7 @@ import nz.co.joyhu.acceptance.page.Homepage;
 import nz.co.joyhu.acceptance.page.LoginPage;
 import nz.co.joyhu.acceptance.page.SignUpPage;
 import nz.co.joyhu.acceptance.page.UserHomePage;
-import shiver.me.timbers.waiting.Interval;
-import shiver.me.timbers.waiting.Timeout;
-import shiver.me.timbers.waiting.Wait;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -49,11 +45,8 @@ public class AuthenticationSteps {
         loginPage.login(userHolder.get());
     }
 
-    @Wait
     @Then("I should be taken to personalised feed page")
     public void iShouldBeTakenToPersonalisedFeedPage() {
-        // waiting something
-        userHomePage.visit();
         assertThat(userHomePage.getUserName(), is(userHolder.get().getUsername()));
     }
 

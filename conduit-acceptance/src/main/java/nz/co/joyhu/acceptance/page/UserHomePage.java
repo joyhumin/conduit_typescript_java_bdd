@@ -4,7 +4,10 @@ import nz.co.joyhu.acceptance.selenium.Browser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import shiver.me.timbers.waiting.Decision;
+import shiver.me.timbers.waiting.Interval;
 import shiver.me.timbers.waiting.Wait;
+
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class UserHomePage extends BasePage {
@@ -23,6 +26,7 @@ public class UserHomePage extends BasePage {
         browser.navigate(baseUrl);
     }
 
+    @Wait(waitForNotNull = Decision.YES, interval = @Interval(unit = TimeUnit.SECONDS, duration = 2L))
     public String getUserName() {
         return nav.getUsername();
     }

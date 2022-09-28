@@ -45,7 +45,7 @@ public class Hooks {
         if (scenario.isFailed()) {
             holders.forEach(holder -> log.error(holder.toString()));
             scenario.attach(browser.takeScreenShot(), "image/png", scenario.getName());
-            browser.clear();
         }
+        browser.clear();
     }
 }
