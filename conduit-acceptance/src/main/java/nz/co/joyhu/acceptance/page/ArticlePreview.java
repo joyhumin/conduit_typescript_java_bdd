@@ -1,11 +1,13 @@
 package nz.co.joyhu.acceptance.page;
 
 import nz.co.joyhu.acceptance.domain.Tag;
+import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
+@Component
 public class ArticlePreview {
     private List<Tag> tagList;
     private OffsetDateTime createDate;

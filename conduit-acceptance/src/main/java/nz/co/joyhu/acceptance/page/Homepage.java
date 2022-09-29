@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class Homepage {
+public class Homepage extends BasePage {
 
-    private final String baseUrl;
-    private final Browser browser;
     private final GlobalFeedComponent globalFeedComponent;
     private final TagComponent tagComponent;
 
@@ -19,15 +17,11 @@ public class Homepage {
                     Browser browser,
                     GlobalFeedComponent globalFeedComponent,
                     TagComponent tagComponent) {
-        this.baseUrl = baseUrl;
-        this.browser = browser;
+        super(baseUrl, browser);
         this.globalFeedComponent = globalFeedComponent;
         this.tagComponent = tagComponent;
     }
 
-    public void visit() {
-        browser.navigate(baseUrl);
-    }
 
     public List<ArticlePreview> getGlobalFeedArticlePreviews() {
         return globalFeedComponent.getArticlePreviews();

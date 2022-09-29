@@ -5,6 +5,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.spring.CucumberContextConfiguration;
 import nz.co.joyhu.ITCucumber;
+import nz.co.joyhu.acceptance.selenium.Browser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,16 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class Hooks {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Browser browser;
 
     @Autowired(required = false)
     @SuppressWarnings("rawtypes")
-    private List<GenericHolder> holders = emptyList();
+    List<GenericHolder> holders = emptyList();
+
+    public Hooks(Browser browser) {
+
+        this.browser = browser;
+    }
 
     @Before
     public void setup(){
@@ -37,6 +44,8 @@ public class Hooks {
         log.info("Scenario End.");
         if (scenario.isFailed()) {
             holders.forEach(holder -> log.error(holder.toString()));
+            scenario.attach(browser.takeScreenShot(), "image/png", scenario.getName());
         }
+        browser.clear();
     }
 }

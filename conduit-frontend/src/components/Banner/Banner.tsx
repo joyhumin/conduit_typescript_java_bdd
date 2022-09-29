@@ -9,7 +9,7 @@ interface Props {
 export const Banner: React.FC<Props> = ({ headline, subheadline }) => {
   return <Box
     data-test={"banner"}
-    sx={{backgroundColor:"#5CB85C"}}
+    sx={{backgroundColor: "primary.main"}}
     padding={"2rem"}
     mb={"2rem"}
     flexGrow={1}

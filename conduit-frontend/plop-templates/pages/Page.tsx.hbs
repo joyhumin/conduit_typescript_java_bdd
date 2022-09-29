@@ -1,8 +1,5 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { Helmet } from "react-helmet-async";
-import { PageHeader } from "../../components/PageHeader";
-import { LayoutHeading } from "../Layout";
 
 interface Props {
   content: string;
@@ -13,13 +10,7 @@ const TITLE = "{{pascalCase name}}";
 export const {{pascalCase name}}: React.FC<Props> = ({ content }) => {
   return (
     <>
-      <Helmet>
-        <title>{ TITLE }</title>
-      </Helmet>
-      <LayoutHeading>{ TITLE }</LayoutHeading>
-      <PageHeader>
         <Typography variant="h5" sx={ { flexGrow: 1 } }>{ content }</Typography>
-      </PageHeader>
     </>
   );
 };

@@ -58,6 +58,8 @@
         </dependencies>
         <executions>
           <execution>
+          <!-- adding this execution id resolve cannot find resource error, but why? todo -->
+            <id>shaded-jar</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
@@ -82,7 +84,7 @@
                 <!-- allows existing entries in the MANIFEST to be replaced and new entries added.  -->
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <manifestEntries>
-                    <Main-Class>nz.shoot2do.acceptance.Main</Main-Class>
+                    <Main-Class>nz.co.joyhu.Main</Main-Class>
                   </manifestEntries>
                 </transformer>
               </transformers>

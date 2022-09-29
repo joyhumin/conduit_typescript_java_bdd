@@ -1,8 +1,14 @@
 import React from "react";
-import { Banner } from "../../components/Banner";
+import { UserHomePage } from "../../components/UserHomePage";
+import { GuestHomePage } from "../../components/GuestHomePage";
+import { useUserContext } from "../../contexts";
 
 export const HomePage: React.FC = () => {
-  return (<Banner
-    headline={"conduit"}
-    subheadline={"A place to share your knowledge."} />);
+  const { user } = useUserContext();
+
+  return (
+    <React.Fragment>
+      {user ? <UserHomePage content={"user home page"} /> : <GuestHomePage />}
+    </React.Fragment>
+  );
 };

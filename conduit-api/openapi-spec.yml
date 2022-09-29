@@ -5,33 +5,37 @@ info:
   description: Backend API for Conduit Interface
   version: '@project.version@'
 
+servers:
+  - url: /api/v1
+
 paths:
-  /v1/users:
+  /users:
     post:
       description: Register a new user
-      operationId: register A
+      operationId: createUser
       tags:
         - user
       responses:
-        200:
+        201:
           $ref: '#/components/responses/UserResponse'
-        403:
-          $ref: '#/components/responses/BadRequest'
         400:
+          $ref: '#/components/responses/BadRequest'
+        403:
           $ref: '#/components/responses/Error'
         404:
           $ref: '#/components/responses/Error'
       requestBody:
         required: true
+        description: Details of the new user to register
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegistrationRequest'
+              $ref: '#/components/schemas/NewUserRequest'
 
-  /v1/users/login:
+  /users/login:
     post:
       operationId: authenticateUser
-      summary: Authenticate the user.
+      summary: Existing user login
       tags:
         - user
       requestBody:
@@ -40,33 +44,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#components/schemas/AuthenticationRequest'
-      responses:
-        200:
-          $ref: '#/components/responses/UserResponse'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        403:
-          $ref: '#/components/responses/Error'
-        404:
-          $ref: '#/components/responses/Error'
-
-  /v1/user:
-    get:
-      operationId: getCurrentUser
-      description: Get current user information
-      tags:
-        - user
-      security:
-        - bearerAuth : []
+              $ref: '#/components/schemas/AuthenticationRequest'
       responses:
         200:
           $ref: '#/components/responses/UserResponse'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
-          $ref: '#/components/responses/ErrorResponse'
-        403:
+          $ref: '#/components/responses/Error'
+
+  /user:
+    get:
+      operationId: getCurrentUser
+      description: Get current user information
+      tags:
+        - user
+      security:
+        - Token : []
+      responses:
+        200:
+          $ref: '#/components/responses/UserResponse'
+        401:
           $ref: '#/components/responses/ErrorResponse'
         404:
           $ref: '#/components/responses/Error'
@@ -74,7 +72,7 @@ paths:
       operationId: updateCurrentUser
       description: Update current user.
       security:
-        - bearerAuth: []
+        - Token: []
       tags:
         - user
       requestBody:
@@ -88,10 +86,8 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         403:
           $ref: '#/components/responses/ErrorResponse'
-        404:
-          $ref: '#/components/responses/Error'
 
-  /v1/profiles/{username}:
+  /profiles/{username}:
     get:
       operationId: getProfileByUsername
       description: Get profile by a user name
@@ -107,21 +103,19 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/ProfileResponse'
-        400:
-          $ref: '#/components/responses/BadRequest'
         403:
           $ref: '#/components/responses/ErrorResponse'
         404:
           $ref: '#/components/responses/Error'
 
-  /v1/profiles/{username}/follow:
+  /profiles/{username}/follow:
     post:
       operationId: followAUserProfile
       description: Follow a user profile by username.
       tags:
         - profile
       security:
-        - bearerAuth: []
+        - Token: []
       parameters:
         - in: path
           name: username
@@ -138,15 +132,14 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         403:
           $ref: '#/components/responses/ErrorResponse'
-        404:
-          $ref: '#/components/responses/Error'
+
     delete:
       operationId: unfollowAUser
       description: Unfollow a user profile by username.
       tags:
         - profile
       security:
-        - bearerAuth: [ ]
+        - Token: [ ]
       parameters:
         - in: path
           name: username
@@ -163,13 +156,12 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         403:
           $ref: '#/components/responses/ErrorResponse'
-        404:
-          $ref: '#/components/responses/Error'
 
-  /v1/articles:
+  /articles:
     get:
       operationId: getMostRecentArticles
-      description: Get most recent articles.
+      description: Get most recent articles globally. Use query parameters to filter
+        results. Auth is optional
       tags:
         - article
       parameters:
@@ -194,12 +186,14 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 20
         - in: query
           name: offset
           description: Offset/skip number of articles.
           schema:
             type: integer
             format: int32
+            default: 0
       responses:
           200:
             $ref: '#/components/responses/ArticlesResponse'
@@ -216,7 +210,7 @@ paths:
       tags:
         - article
       security:
-        - bearerAuth: []
+        - Token: []
       requestBody:
         required: true
         description: New article.
@@ -233,17 +227,15 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         403:
           $ref: '#/components/responses/ErrorResponse'
-        404:
-          $ref: '#/components/responses/Error'
 
-  /v1/articles/feed:
+  /articles/feed:
     get:
       description: Get feed of articles for current user.
       operationId: getArticlesFeed
       tags:
         - article
       security:
-        - bearerAuth: []
+        - Token: []
       parameters:
         - in: query
           name: limit
@@ -251,12 +243,14 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 20
         - in: query
           name: offset
           description: Offset/skip number of articles.
           schema:
             type: integer
             format: int32
+            default: 0
       responses:
         200:
           $ref: '#/components/responses/ArticlesResponse'
@@ -269,7 +263,7 @@ paths:
         404:
           $ref: '#/components/responses/Error'
 
-  /v1/articles/slug:
+  /articles/slug:
     get:
       description: Get single article.
       operationId: getSingleArticleBySlug
@@ -285,12 +279,6 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/ArticleResponse'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/ErrorResponse'
-        403:
-          $ref: '#/components/responses/ErrorResponse'
         404:
           $ref: '#/components/responses/Error'
     put:
@@ -299,7 +287,7 @@ paths:
       tags:
         - article
       security:
-        - bearerAuth: []
+        - Token: []
       parameters:
         - name: slug
           required: true
@@ -317,11 +305,7 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/ArticleResponse'
-        400:
-          $ref: '#/components/responses/BadRequest'
         401:
-          $ref: '#/components/responses/ErrorResponse'
-        403:
           $ref: '#/components/responses/ErrorResponse'
         404:
           $ref: '#/components/responses/Error'
@@ -331,7 +315,7 @@ paths:
       tags:
         - article
       security:
-        - bearerAuth: []
+        - Token: []
       parameters:
         - name: slug
           in: path
@@ -340,16 +324,12 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/Success'
-        400:
-          $ref: '#/components/responses/BadRequest'
         401:
           $ref: '#/components/responses/ErrorResponse'
         403:
           $ref: '#/components/responses/ErrorResponse'
-        404:
-          $ref: '#/components/responses/Error'
 
-  /v1/articles/{slug}/comments:
+  /articles/{slug}/comments:
     post:
       description: Add comments to an article.
       operationId: addCommentToArticle
@@ -362,7 +342,7 @@ paths:
           schema:
             type: string
       security:
-        - bearerAuth: []
+        - Token: []
       requestBody:
         required: true
         description: request body for adding a comment.
@@ -379,8 +359,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         403:
           $ref: '#/components/responses/ErrorResponse'
-        404:
-          $ref: '#/components/responses/Error'
     get:
       description: Get comments from an article.
       operationId: getCommentsFromAnArticle
@@ -395,23 +373,19 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/CommentsResponse'
-        400:
-          $ref: '#/components/responses/BadRequest'
         401:
-          $ref: '#/components/responses/ErrorResponse'
-        403:
           $ref: '#/components/responses/ErrorResponse'
         404:
           $ref: '#/components/responses/Error'
 
-  /v1/articles/{slug}/comments/{id}:
+  /articles/{slug}/comments/{id}:
     delete:
       description: delete comment of an article
       operationId: deleteCommentById
       tags:
         - comment
       security:
-        - bearerAuth: []
+        - Token: []
       parameters:
         - name: slug
           in: path
@@ -430,17 +404,13 @@ paths:
           $ref: '#/components/responses/BadRequest'
         401:
           $ref: '#/components/responses/ErrorResponse'
-        403:
-          $ref: '#/components/responses/ErrorResponse'
-        404:
-          $ref: '#/components/responses/Error'
 
-  /v1/articles/{slug}/favorite:
+  /articles/{slug}/favorite:
     post:
       description: Favorite an article
       operationId: favoriteArticle
       security:
-        - bearerAuth: []
+        - Token: []
       tags:
         - article
       parameters:
@@ -458,14 +428,12 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         403:
           $ref: '#/components/responses/ErrorResponse'
-        404:
-          $ref: '#/components/responses/Error'
 
     delete:
       description: unfavorite an article
       operationId: unfavoriteArticle
       security:
-        - bearerAuth: [ ]
+        - Token: [ ]
       tags:
         - article
       parameters:
@@ -483,10 +451,8 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         403:
           $ref: '#/components/responses/ErrorResponse'
-        404:
-          $ref: '#/components/responses/Error'
 
-  /v1/tags:
+  /tags:
     get:
       description: get a list of tags
       operationId: getTags
@@ -495,11 +461,7 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/TagsResponse'
-        400:
-          $ref: '#/components/responses/BadRequest'
         401:
-          $ref: '#/components/responses/ErrorResponse'
-        403:
           $ref: '#/components/responses/ErrorResponse'
         404:
           $ref: '#/components/responses/Error'
@@ -585,12 +547,20 @@ components:
     UserResponse:
       description: User authentication info.
       type: object
+      required:
+        - user
       properties:
         user:
           $ref: '#/components/schemas/User'
     User:
       description: User authentication info.
       type: object
+      required:
+        - bio
+        - email
+        - image
+        - token
+        - username
       properties:
         email:
           type: string
@@ -623,13 +593,15 @@ components:
         password:
           type: string
           format: password
-    RegistrationRequest:
+    NewUserRequest:
       description: Request body for user registration.
       type: object
+      required:
+        - user
       properties:
         user:
-          $ref: '#/components/schemas/RegistrationRequestDetails'
-    RegistrationRequestDetails:
+          $ref: '#/components/schemas/NewUser'
+    NewUser:
       description: Request body for user registration.
       type: object
       required:
@@ -660,15 +632,16 @@ components:
           format: email
         username:
           type: string
-        password:
+        token:
           type: string
-          format: password
         image:
           type: string
         bio:
           type: string
     ProfileResponse:
       description: Profile of user.
+      required:
+        - profile
       type: object
       properties:
         profile:
@@ -676,6 +649,11 @@ components:
     Profile:
       description: Profile of user.
       type: object
+      required:
+        - bio
+        - following
+        - image
+        - username
       properties:
         username:
           type: string
@@ -688,6 +666,9 @@ components:
     ArticlesResponse:
       description: A list of articles.
       type: object
+      required:
+        - articles
+        - articlesCount
       properties:
         articles:
           type: array
@@ -698,6 +679,8 @@ components:
           format: int32
     ArticleResponse:
       description: response for article.
+      required:
+        - article
       type: object
       properties:
         article:
@@ -705,6 +688,17 @@ components:
     Article:
       description: An article.
       type: object
+      required:
+        - author
+        - body
+        - createdAt
+        - description
+        - favorited
+        - favoritesCount
+        - slug
+        - tagList
+        - title
+        - updatedAt
       properties:
         slug:
           type: string
@@ -729,22 +723,12 @@ components:
         favoritesCount:
           type: integer
         author:
-          $ref: '#/components/schemas/Author'
-    Author:
-      description: An author.
-      type: object
-      properties:
-        username:
-          type: string
-        bio:
-          type: string
-        image:
-          type: string
-        following:
-          type: boolean
+          $ref: '#/components/schemas/Profile'
     CreateArticleRequest:
       description: Request body to create a new article.
       type: object
+      required:
+        - article
       properties:
         article:
           $ref: '#/components/schemas/CreateArticleRequestDetails'
@@ -769,6 +753,8 @@ components:
     UpdateArticleRequest:
       type: object
       description: Request body of updating an article.
+      required:
+        - article
       properties:
         article:
           $ref: '#/components/schemas/UpdateArticleRequestDetails'
@@ -785,6 +771,8 @@ components:
     CreateCommentRequest:
       type: object
       description: Request body of a comment
+      required:
+        - comment
       properties:
         comment:
           $ref: '#/components/schemas/CreateCommentRequestDetails'
@@ -799,12 +787,20 @@ components:
     CommentResponse:
       type: object
       description: A comment response.
+      required:
+        - comment
       properties:
         comment:
           $ref: '#/components/schemas/Comment'
     Comment:
       type: object
       description: details of a comment object.
+      required:
+        - id
+        - author
+        - body
+        - createdAt
+        - updatedAt
       properties:
         id:
           type: integer
@@ -817,10 +813,12 @@ components:
         body:
           type: string
         author:
-          $ref: '#/components/schemas/Author'
+          $ref: '#/components/schemas/Profile'
     CommentsResponse:
       description: response of a list of comments
       type: object
+      required:
+        - comments
       properties:
         comments:
           type: array
@@ -829,6 +827,8 @@ components:
     TagsResponse:
       description: a list ot tags
       type: object
+      required:
+        - tags
       properties:
         tags:
           type: array
@@ -897,7 +897,7 @@ components:
               API_ING_MSGEID_00007, API_ING_MSGEID_00008 ]
 
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    Token:
+      type: apiKey
+      in: header
+      name: Authorization

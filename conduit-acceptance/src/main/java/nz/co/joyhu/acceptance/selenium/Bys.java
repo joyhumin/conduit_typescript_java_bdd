@@ -15,8 +15,11 @@ public class Bys {
         return attribute("data-test", dataTest);
     }
 
+    public static By ariaLabel(String ariaLabel) {
+        return attribute("aria-label", ariaLabel);
+    }
+
     public static By attribute(String name, String value) {
         return By.cssSelector(format("[%s=\"%s\"]", name, value));
     }
-
 }
