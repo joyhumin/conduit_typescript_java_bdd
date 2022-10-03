@@ -106,9 +106,18 @@
   <build>
     <plugins>
       <plugin>
+        <!--Build a fat jar with build-in tomcat server
+        ref: https://www.baeldung.com/deployable-fat-jar-spring-boot
+        note: after spring boot 2.3, layer is enabled by default
+        -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+<!--      <plugin>-->
+<!--        <groupId>com.google.cloud.tools</groupId>-->
+<!--        <artifactId>jib-maven-plugin</artifactId>-->
+<!--        <version>3.3.0</version>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 

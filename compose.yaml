@@ -1,0 +1,45 @@
+services:
+  frontend:
+    image: conduit-frontend
+    build: ./conduit-frontend
+    container_name: conduit-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - conduit-network
+  backend:
+    image: conduit-api
+    build: ./conduit-backend
+    # customise container name rather than auto-generate name
+    container_name: conduit-api
+    # port bonding: [Host]:[Container]:[Protocol]
+    # host: the docker host, the port expose to external world
+    # container:
+    ports:
+      - "8080:8090" # todo: do I have to expose the port to external world?
+    depends_on:
+      - db
+    networks:
+      - conduit-network
+
+  db:
+    image: mariadb:10.9.3
+    restart: always
+    container_name: conduit-db # todo: the container-name is needed in the application properties file, how can I make it as variable, so when I change once place, I don't need to manually change in the application file.
+    # todo: when run maven package, which application properties file is packaged.
+    ports:
+      - "3310:3306"
+    networks:
+      - conduit-network
+    environment:
+      - MARIADB_USER=joy
+      - MARIADB_PASSWORD=admin
+      - MARIADB_ROOT_PASSWORD=admin
+      - MARIADB_DATABASE=conduit
+
+networks:
+  conduit-network:
+    name: conduit-network
+    driver: bridge

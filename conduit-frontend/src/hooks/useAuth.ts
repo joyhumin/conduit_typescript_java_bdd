@@ -6,7 +6,6 @@ import { useUserContext } from "../contexts";
 // export const useAuth = (content: string): UseQueryResult<AuthState, Error> =>
 //   useQuery([ "auth", content ], () => retrieveAuth(content), { retry: false });
 
-export const JWT_TOKEN = "jwt_token";
 export const USER = "user";
 
 export interface UserSignIn {
