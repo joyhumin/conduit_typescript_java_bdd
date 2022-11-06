@@ -6,15 +6,6 @@
   <artifactId>conduit</artifactId>
   <version>0.3-SNAPSHOT</version>
 
-
-<!-- allow backend to use devtool-->
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.3</version>
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
-
   <name>${project.artifactId}</name>
 
 
@@ -30,7 +21,55 @@
     <surefire.version>2.22.2</surefire.version>
     <failsafe.version>2.22.2</failsafe.version>
     <frontend.module>conduit-frontend</frontend.module>
+    <spring.boot.version>2.6.5</spring.boot.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <!-- Import all the required dependencies and versions for Spring Boot. -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+<!-- Artifacts specified in the <dependencies> section will ALWAYS be included as a dependency of the child module(s). -->
+    <dependency>
+      <groupId>com.github.shiver-me-timbers</groupId>
+      <artifactId>smt-random</artifactId>
+      <version>1.8</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.shiver-me-timbers</groupId>
+      <artifactId>smt-matchers</artifactId>
+      <version>1.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>nl.jqno.equalsverifier</groupId>
+      <artifactId>equalsverifier</artifactId>
+      <version>3.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.bean-matchers</groupId>
+      <artifactId>bean-matchers</artifactId>
+      <version>0.13</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.jparams</groupId>
+      <artifactId>to-string-verifier</artifactId>
+      <version>1.4.8</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <build>
     <pluginManagement>
@@ -196,41 +235,10 @@
       </plugin>
 
     </plugins>
-  </build>
 
-  <dependencies>
-<!-- Artifacts specified in the <dependencies> section will ALWAYS be included as a dependency of the child module(s). -->
-    <dependency>
-      <groupId>com.github.shiver-me-timbers</groupId>
-      <artifactId>smt-random</artifactId>
-      <version>1.8</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.shiver-me-timbers</groupId>
-      <artifactId>smt-matchers</artifactId>
-      <version>1.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>nl.jqno.equalsverifier</groupId>
-      <artifactId>equalsverifier</artifactId>
-      <version>3.8.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.code.bean-matchers</groupId>
-      <artifactId>bean-matchers</artifactId>
-      <version>0.13</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.jparams</groupId>
-      <artifactId>to-string-verifier</artifactId>
-      <version>1.4.8</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+
+
+  </build>
 
   <modules>
     <module>${frontend.module}</module>

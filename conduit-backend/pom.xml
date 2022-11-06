@@ -112,6 +112,17 @@
         -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>nz.co.joyhu.ConduitRestApi</mainClass>
+        </configuration>
+        <!--todo: adding this will allow docker build up, not sure why? I removed the parent in the parment pom-->
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 <!--      <plugin>-->
 <!--        <groupId>com.google.cloud.tools</groupId>-->
