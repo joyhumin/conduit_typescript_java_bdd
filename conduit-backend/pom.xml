@@ -106,9 +106,29 @@
   <build>
     <plugins>
       <plugin>
+        <!--Build a fat jar with build-in tomcat server
+        ref: https://www.baeldung.com/deployable-fat-jar-spring-boot
+        note: after spring boot 2.3, layer is enabled by default
+        -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>nz.co.joyhu.ConduitRestApi</mainClass>
+        </configuration>
+        <!--todo: adding this will allow docker build up, not sure why? I removed the parent in the parment pom-->
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
+<!--      <plugin>-->
+<!--        <groupId>com.google.cloud.tools</groupId>-->
+<!--        <artifactId>jib-maven-plugin</artifactId>-->
+<!--        <version>3.3.0</version>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 
