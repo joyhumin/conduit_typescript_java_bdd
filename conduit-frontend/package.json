@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false && react-scripts build",
     "test": "react-scripts test --coverage",
     "lint": "eslint src/**/*.js src/**/*.jsx src/**/*.ts src/**/*.tsx",
     "eject": "react-scripts eject",
