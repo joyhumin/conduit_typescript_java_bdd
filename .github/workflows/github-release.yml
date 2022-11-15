@@ -25,6 +25,9 @@ jobs:
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk/
         with:
+          maven-args: "-DskipTests"
+          # todo: change this to master later
+          release-branch-name: "build_workflow"
           version-minor: true
           skip-perform: true
           git-release-bot-name: "release-bot"
