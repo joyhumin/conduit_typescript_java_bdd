@@ -31,6 +31,7 @@ jobs:
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk/
         with:
+          token: ${{ secrets.ACTION_PAT }}
           maven-args: "-DskipTests"
           # todo: change this to master later
           release-branch-name: "build_workflow"
