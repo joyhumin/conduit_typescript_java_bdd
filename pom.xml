@@ -22,6 +22,7 @@
     <failsafe.version>2.22.2</failsafe.version>
     <frontend.module>conduit-frontend</frontend.module>
     <spring.boot.version>2.6.5</spring.boot.version>
+    <project.scm.url>git@me.github.com:joyhumin/conduit_typescript_java_bdd.git</project.scm.url>
   </properties>
 
   <dependencyManagement>
@@ -231,6 +232,8 @@
           <preparationGoals>clean package -Prelease -DskipTests</preparationGoals>
           <!-- Update the frontends version to the current SNAPSHOT version. -->
           <completionGoals>process-resources -am -pl ${frontend.module} -Prelease</completionGoals>
+          <!-- Allow CI to -->
+          <scmCommentPrefix>[ci skip] </scmCommentPrefix>
         </configuration>
       </plugin>
 
@@ -249,9 +252,9 @@
 
   <!-- scm section is required by maven release plugin -->
   <scm>
-    <developerConnection>scm:git:git@me.github.com:joyhumin/conduit_typescript_java_bdd.git</developerConnection>
-    <connection>scm:git:git@me.github.com:joyhumin/conduit_typescript_java_bdd.git</connection>
+    <developerConnection>scm:git:${project.scm.url}</developerConnection>
+    <connection>scm:git:${project.scm.url}</connection>
     <url>https://github.com/joyhumin/conduit_typescript_java_bdd.git</url>
-    <tag>0.2.0</tag>
+    <tag>HEAD</tag>
   </scm>
 </project>

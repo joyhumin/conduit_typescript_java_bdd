@@ -1,10 +1,14 @@
 name:  build maven project
 
-on: push
+on:
+  push:
+    tags:
+      - '*'
 
 jobs:
-  build:
+  packaging:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout out repo
         uses: actions/checkout@v3
