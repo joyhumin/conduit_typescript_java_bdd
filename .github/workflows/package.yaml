@@ -35,8 +35,12 @@ jobs:
           name: github-actions-artifact
           path: staging
 
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r conduit-artifact.zip staging
+
       - name: Create zip artifact for project
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.latesttag.outputs.tag }}
-          files: staging/*
+          files: conduit-artifact.zip
