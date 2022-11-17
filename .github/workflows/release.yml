@@ -41,5 +41,5 @@ jobs:
       - name: Invoke workflow without inputs
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: package.yml
+          workflow: Create package
           token: ${{ secrets.ACTION_PAT }}
