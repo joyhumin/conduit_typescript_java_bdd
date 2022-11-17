@@ -32,7 +32,6 @@ jobs:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk/
         with:
           maven-args: "-DskipTests"
-          release-branch-name: "build_workflow"
           version-minor: true
           skip-perform: true
           git-release-bot-name: "maven-release"
@@ -41,5 +40,5 @@ jobs:
       - name: Invoke workflow without inputs
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: Create package
+          workflow: package.yaml
           token: ${{ secrets.ACTION_PAT }}
