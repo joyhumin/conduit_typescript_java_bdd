@@ -8,7 +8,7 @@
   <parent>
     <groupId>nz.co.joyhu</groupId>
     <artifactId>conduit</artifactId>
-    <version>0.11.0-SNAPSHOT</version>
+    <version>0.11.0</version>
   </parent>
 
   <artifactId>conduit-backend</artifactId>
