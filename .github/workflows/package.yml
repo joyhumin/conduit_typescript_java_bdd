@@ -1,8 +1,6 @@
 name: Create package
 
-on:
-  repository_dispatch:
-    types: [ create-release ]
+on: [workflow_dispatch]
 
 jobs:
   packaging:
