@@ -27,7 +27,7 @@ jobs:
       - name: Build with Maven
         run: |
           mvn clean package -DskipTests
-          mkdir ~/staging && cp . ~/staging
+          mkdir ~/staging && cp -r . ~/staging
 
       - name: Persist workflow data as artifacts
         uses: actions/upload-artifact@v2
