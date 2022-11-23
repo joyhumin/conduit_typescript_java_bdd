@@ -5,10 +5,16 @@ services:
     container_name: conduit-frontend
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
     depends_on:
       - backend
     networks:
       - conduit-network
+  certbot:
+    image: certbot/certbot
   backend:
     image: conduit-api
     build: ./conduit-backend
