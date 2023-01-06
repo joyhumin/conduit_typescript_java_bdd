@@ -7,6 +7,7 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEquals;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCode;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -24,7 +25,7 @@ public class UserTest {
 
     @Test
     public void User_has_equality() {
-        // use Google bean-matchers need to do both hashcode & equality check
-        EqualsVerifier.forClass(User.class).suppress(Warning.NONFINAL_FIELDS).usingGetClass().verify();
+        assertThat(User.class, hasValidBeanEquals());
+        assertThat(User.class, hasValidBeanHashCode());
     }
 }

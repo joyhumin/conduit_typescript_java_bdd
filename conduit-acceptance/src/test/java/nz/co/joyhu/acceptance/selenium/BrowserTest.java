@@ -20,7 +20,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static shiver.me.timbers.data.random.RandomBytes.someBytes;
@@ -187,6 +186,20 @@ public class BrowserTest {
         then(op).should().deleteAllCookies();
         then(driver).should().executeScript("localStorage.clear()");
         then(driver).should().executeScript("sessionStorage.clear()");
+    }
+
+    @Test
+    public void Can_get_current_page_url() {
+
+        final String url = someString(10);
+        // Given
+        given(driver.getCurrentUrl()).willReturn(url);
+
+        // When
+        final String actual = browser.getCurrentUrl();
+
+        // Then
+        assertThat(actual, is(equalTo(url)));
     }
 
 

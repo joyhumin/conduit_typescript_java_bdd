@@ -83,4 +83,8 @@ public class Browser {
         jsExecutor.executeScript("localStorage.clear()");
         jsExecutor.executeScript("sessionStorage.clear()");
     }
+
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
 }

@@ -6,6 +6,7 @@ public class User {
     private String email;
     private String password;
     private String username;
+    private String bio;
 
     public User() {
     }
@@ -34,17 +35,25 @@ public class User {
         this.username = username;
     }
 
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(username, user.username);
+        return Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(username, user.username) && Objects.equals(bio, user.bio);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password, username);
+        return Objects.hash(email, password, username, bio);
     }
 
     @Override
@@ -53,6 +62,7 @@ public class User {
             "email='" + email + '\'' +
             ", password='" + password + '\'' +
             ", username='" + username + '\'' +
+            ", bio='" + bio + '\'' +
             '}';
     }
 }
