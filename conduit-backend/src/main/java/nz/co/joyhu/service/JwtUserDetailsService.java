@@ -2,6 +2,7 @@ package nz.co.joyhu.service;
 
 import nz.co.joyhu.api.v1.NewUser;
 import nz.co.joyhu.api.v1.User;
+import nz.co.joyhu.api.v1.UserResponse;
 import nz.co.joyhu.model.UserEntity;
 import nz.co.joyhu.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,8 +20,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     public JwtUserDetailsService(
-        UserRepository userRepository,
-        PasswordEncoder passwordEncoder
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -36,7 +37,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
 
-    public void save(NewUser newUser) { 
+    public void save(NewUser newUser) {
         final UserEntity user = new UserEntity();
         user.setEmail(newUser.getEmail());
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
@@ -44,7 +45,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public User findByEmail(String email) {
+    public UserResponse findByEmail(String email) {
         final UserEntity user = userRepository.findByEmail(email);
         if (user == null) {
             throw new UserNotFoundException("User not found with email: " + email);
@@ -54,6 +55,8 @@ public class JwtUserDetailsService implements UserDetailsService {
         existUser.setBio(user.getBio());
         existUser.setImage(user.getImage());
         existUser.setEmail(user.getEmail());
-        return existUser;
+        final UserResponse response = new UserResponse();
+        response.setUser(existUser);
+        return response;
     }
 }

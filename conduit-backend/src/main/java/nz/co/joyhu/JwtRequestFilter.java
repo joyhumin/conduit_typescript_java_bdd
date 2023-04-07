@@ -37,7 +37,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             log.info("Request has token, need to validate token");
             final String jwtToken = requestTokenHeader.substring(7);
             log.info("token  = {}", jwtToken);
-//            final String username = jwtTokenProvider.getUsernameFromToken(jwtToken);
         }
 
         filterChain.doFilter(request, response);
